@@ -1,16 +1,15 @@
 #!/bin/bash
 
-instance_names=(slurm0-a3-ghpc-{73..74})
+instance_names=(slurm0-a3-ghpc-{0..74})
 
 # set zone
 zone=asia-southeast1-c
 
+>error_log.txt
+
 # stop instances
-for instance in ${instance_names[@]}
-do
-  echo "Stopping $instance..."
-  gcloud compute instances stop $instance --zone=$zone --discard-local-ssd=true
-done
+export zone
+parallel 'echo "Stopping {}..." && gcloud compute instances stop {} --zone=$zone --discard-local-ssd=true' ::: ${instance_names[@]}
 
 # check status
 for instance in ${instance_names[@]}
