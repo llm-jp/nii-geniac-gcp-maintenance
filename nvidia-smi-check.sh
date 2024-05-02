@@ -18,7 +18,7 @@ parallel 'echo "Checking nvidia-smi on {}..." && gcloud compute ssh {} --zone=$z
 
 echo "NVIDIA-smi check completed."
 
-# lustre mount check
-parallel 'echo "Checking Lustre mount on {}..." && gcloud compute ssh {} --zone=$zone --command "ls /lustre" || echo {} >> $error_file' ::: ${instance_names[@]}
+# lustre mount
+parallel 'echo "Checking Lustre mount on {}..." && gcloud compute ssh {} --zone=$zone --command "bash scripts/gcp-ansible/setup_lustre.sh" || echo {} >> $error_file' ::: ${instance_names[@]}
 
-echo "Lustre mount check completed."
+echo "Lustre mount completed."
