@@ -9,7 +9,7 @@ zone=asia-southeast1-c
 
 # stop instances
 export zone
-parallel 'echo "Stopping {}..." && gcloud compute instances stop {} --zone=$zone --discard-local-ssd=true' ::: ${instance_names[@]}
+parallel --halt-on-error now,fail=1 'echo "Stopping {}..." && gcloud compute instances stop {} --zone=$zone --discard-local-ssd=true' ::: ${instance_names[@]} 2>>error_log.txt
 
 # check status
 for instance in ${instance_names[@]}
